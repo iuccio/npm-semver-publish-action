@@ -1,21 +1,26 @@
 {
-  "name": "javascript-action",
-  "description": "GitHub Actions JavaScript Template",
+  "name": "npm-semantic-publish-action",
+  "description": "Github action to publish npm packages with semanantic versioning rules",
   "version": "0.0.0",
-  "author": "",
-  "private": true,
-  "homepage": "https://github.com/actions/javascript-action#readme",
+  "author": "iuccio",
+  "homepage": "https://github.com/iuccio/npm-semantic-publish-action#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
+    "url": "git@github.com:iuccio/npm-semantic-publish-action.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
+    "url": "https://github.com/iuccio/npm-semantic-publish-action/issues"
   },
   "keywords": [
     "GitHub",
     "Actions",
-    "JavaScript"
+    "JavaScript",
+    "npm",
+    "publish",
+    "semantic",
+    "versioning",
+    "semanantic versioning",
+    "release"
   ],
   "exports": {
     ".": "./dist/index.js"

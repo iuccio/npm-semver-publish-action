@@ -1,6 +1,6 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'npm-semantic-publish-action'
+description: 'Github action to publish npm packages with semanantic versioning rules'
+author: 'iuccio'
 
 # Define your inputs here.
 inputs:
