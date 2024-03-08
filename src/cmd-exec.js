@@ -47,6 +47,8 @@ async function execNpmPublish() {
   await exec.exec('npm', ['publish'], options)
   core.debug(`new version ${output} succsessfully published`)
   console.log(`new version ${output} succsessfully published`)
+  core.debug(`npm = ${myError}`)
+  console.log(`npm = ${myError}`)
   return output
 }
 
@@ -54,6 +56,8 @@ async function execGitPush() {
   await exec.exec('git', ['push', '--follow-tags'], options)
   core.debug(`git commit and tag succsessfully published: ${output}`)
   console.log(`git commit and tag succsessfully published: ${output}`)
+  core.debug(`npm = ${myError}`)
+  console.log(`npm = ${myError}`)
   return output
 }
 
