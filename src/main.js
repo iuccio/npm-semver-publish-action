@@ -23,16 +23,18 @@ async function run() {
       if (currentCommitMsg.includes(PATCH_MSG)) {
         core.debug('Executing new PATCH release...')
         console.log('Executing new PATCH release...')
-        cmd.execNpmPublish(PATCH_MSG)
+        await cmd.execNpmVersion(PATCH_MSG)
       } else if (currentCommitMsg.includes(MAJOR_MSG)) {
-        cmd.execNpmPublish(MAJOR_MSG)
+        await cmd.execNpmVersion(MAJOR_MSG)
         core.debug('Executing new MAJOR release...')
         console.log('Executing new MAJOR release...')
       } else {
         core.debug('Executing new MINOR release...')
         console.log('Executing new MINOR release...')
-        cmd.execNpmPublish()
+        await cmd.execNpmVersion()
       }
+      await cmd.execNpmPublish()
+      await cmd.execGitPush()
     }
 
     //exec.exec('npm', ['version', 'patch', '--force'])

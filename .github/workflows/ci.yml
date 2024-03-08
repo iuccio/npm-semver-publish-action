@@ -54,10 +54,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Test Local Action
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
+          registry-url: 'https://registry.npmjs.org'
+      - name: Test action
         id: test-action
         uses: ./
         with:
           target-branch: master
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Print Output
         id: output
