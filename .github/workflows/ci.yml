@@ -62,15 +62,15 @@ jobs:
         with:
           node-version: 20.x
           registry-url: 'https://registry.npmjs.org'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Test action
         id: test-action
         uses: ./
         with:
           target-branch: main
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          
+
       - name: Print Output
         id: output
         run: new version "${{ steps.test-action.outputs.version }}"

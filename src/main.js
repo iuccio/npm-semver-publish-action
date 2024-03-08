@@ -18,17 +18,6 @@ async function run() {
     console.log(`current target branch = ${targetBranch}`)
     const currentBranch = await cmd.getCurrentBranch()
     const currentCommitMsg = await cmd.getCommitMessage()
-    core.info(`current ${currentBranch} - target branch = ${targetBranch}`)
-    console.log(`current ${currentBranch} - target branch = ${targetBranch}`)
-
-    core.info(
-      `compare ${'main'.toLocaleLowerCase().localeCompare('main'.toLocaleLowerCase())}`
-    )
-    const asd = String.toString(currentBranch)
-    const adsa = String.toString(targetBranch)
-    core.info(`compare ${asd === adsa})}`)
-    core.info(`currentBranch typeof ${typeof currentBranch} `)
-    core.info(`targetBranch typeof ${typeof targetBranch} `)
     if (String.toString(targetBranch) === String.toString(currentBranch)) {
       core.info('Start versioning..')
       console.log('Start versioning..')
