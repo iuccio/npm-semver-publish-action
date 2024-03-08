@@ -1,4 +1,4 @@
-# Github action to publish npm packages with semanantic versioning rules
+# GitHub action to publish npm packages with semanantic versioning rules
 
 [![GitHub Super-Linter](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
 ![CI](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/ci.yml/badge.svg)

@@ -1,5 +1,6 @@
 const core = require('@actions/core')
-const { wait } = require('./wait')
+const exec = require('@actions/exec')
+const command = require('./command-helper')
 
 /**
  * The main function for the action.
@@ -7,24 +8,13 @@ const { wait } = require('./wait')
  */
 async function run() {
   try {
-    const ms = core.getInput('milliseconds', { required: true })
-
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
-
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
-
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    const branch = await command.getCurrentBranch()
+    const commitMsg = await command.getCommitMessage()
+    //exec.exec('npm', ['version', 'patch', '--force'])
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
   }
 }
 
-module.exports = {
-  run
-}
+module.exports = { run }
