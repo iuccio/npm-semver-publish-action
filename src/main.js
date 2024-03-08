@@ -33,8 +33,19 @@ async function run() {
         console.log('Executing new MINOR release...')
         await cmd.execNpmVersion()
       }
+      core.debug('Executing npm publish...')
+      console.log('Executing npm publish...')
       await cmd.execNpmPublish()
+      core.debug('Executing git pushing...')
+      console.log('Executing git pushing...')
       await cmd.execGitPush()
+    } else {
+      core.debug(
+        `A new release version is only bumped on branch: ${targetBranch}`
+      )
+      console.log(
+        `A new release version is only bumped on branch: ${targetBranch}`
+      )
     }
 
     //exec.exec('npm', ['version', 'patch', '--force'])
