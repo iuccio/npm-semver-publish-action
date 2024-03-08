@@ -3953,7 +3953,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 967:
+/***/ 915:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const exec = __nccwpck_require__(514)
@@ -3982,7 +3982,30 @@ async function getCommitMessage() {
   return output
 }
 
-module.exports = { getCommitMessage, getCurrentBranch }
+async function execNpmPublish(versioningType) {
+  const RELEASE_COMMIT_MSG = 'new release [skip ci]'
+  const verType = getVersioningType(versioningType)
+  await exec.exec(
+    'npm',
+    ['version', verType, '--force', '-m', RELEASE_COMMIT_MSG],
+    options
+  )
+  core.debug(`npm = ${output}`)
+  console.log(`npm = ${output}`)
+  return output
+}
+
+function getVersioningType(versioningType) {
+  if (versioningType === '[PATCH]') {
+    return 'patch'
+  }
+  if (versioningType === '[MAJOR]') {
+    return 'major'
+  }
+  return 'minor'
+}
+
+module.exports = { getCommitMessage, getCurrentBranch, execNpmPublish }
 
 
 /***/ }),
@@ -3992,7 +4015,10 @@ module.exports = { getCommitMessage, getCurrentBranch }
 
 const core = __nccwpck_require__(186)
 const exec = __nccwpck_require__(514)
-const command = __nccwpck_require__(967)
+const cmd = __nccwpck_require__(915)
+
+const PATCH_MSG = '[PATCH]'
+const MAJOR_MSG = '[MAJOR]'
 
 /**
  * The main function for the action.
@@ -4000,9 +4026,34 @@ const command = __nccwpck_require__(967)
  */
 async function run() {
   try {
-    const branch = await command.getCurrentBranch()
-    const commitMsg = await command.getCommitMessage()
+    const targetBranch = core.getInput('target-branch', { required: true })
+    core.debug(`current target branch = ${targetBranch}`)
+    console.log(`current target branch = ${targetBranch}`)
+    const currentBranch = await cmd.getCurrentBranch()
+    const currentCommitMsg = await cmd.getCommitMessage()
+
+    if (targetBranch === currentBranch) {
+      core.debug('Start versioning..')
+      console.log('Start versioning..')
+      if (currentCommitMsg.includes(PATCH_MSG)) {
+        core.debug('Executing new PATCH release...')
+        console.log('Executing new PATCH release...')
+        cmd.execNpmPublish(PATCH_MSG)
+      } else if (currentCommitMsg.includes(MAJOR_MSG)) {
+        cmd.execNpmPublish(MAJOR_MSG)
+        core.debug('Executing new MAJOR release...')
+        console.log('Executing new MAJOR release...')
+      } else {
+        core.debug('Executing new MINOR release...')
+        console.log('Executing new MINOR release...')
+        cmd.execNpmPublish()
+      }
+    }
+
     //exec.exec('npm', ['version', 'patch', '--force'])
+
+    // Set outputs for other workflow steps to use
+    core.setOutput('version', 'v.0.0.1')
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)

@@ -24,4 +24,27 @@ async function getCommitMessage() {
   return output
 }
 
-module.exports = { getCommitMessage, getCurrentBranch }
+async function execNpmPublish(versioningType) {
+  const RELEASE_COMMIT_MSG = 'new release [skip ci]'
+  const verType = getVersioningType(versioningType)
+  await exec.exec(
+    'npm',
+    ['version', verType, '--force', '-m', RELEASE_COMMIT_MSG],
+    options
+  )
+  core.debug(`npm = ${output}`)
+  console.log(`npm = ${output}`)
+  return output
+}
+
+function getVersioningType(versioningType) {
+  if (versioningType === '[PATCH]') {
+    return 'patch'
+  }
+  if (versioningType === '[MAJOR]') {
+    return 'major'
+  }
+  return 'minor'
+}
+
+module.exports = { getCommitMessage, getCurrentBranch, execNpmPublish }

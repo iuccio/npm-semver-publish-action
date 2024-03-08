@@ -1,18 +1,21 @@
-name: 'npm-semantic-publish-action'
-description: 'Github action to publish npm packages with semanantic versioning rules'
+name: 'npm-semver-publish-action'
+description:
+  'GitHub action to publish npm packages with semanantic versioning rules'
 author: 'iuccio'
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  target-branch:
+    description:
+      'Branch name where npm publish with semanantic versioning should be
+      applied to the GitHub Action execution'
     required: true
-    default: '1000'
+    default: 'master'
 
 # Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
+  version:
+    description: 'Published release version'
 
 runs:
   using: node20
