@@ -3,7 +3,6 @@
 [![GitHub Super-Linter](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
 ![CI](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/ci.yml/badge.svg)
 
-
 ## Development
 
 1. :hammer_and_wrench: Install the dependencies
