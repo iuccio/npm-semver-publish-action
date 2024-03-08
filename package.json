@@ -8,6 +8,9 @@
     "type": "git",
     "url": "git@github.com:iuccio/npm-semantic-publish-action.git"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "bugs": {
     "url": "https://github.com/iuccio/npm-semantic-publish-action/issues"
   },
