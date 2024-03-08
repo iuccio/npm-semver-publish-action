@@ -4060,36 +4060,50 @@ const MAJOR_MSG = '[MAJOR]'
  */
 async function run() {
   try {
-    const targetBranch = core.getInput('target-branch', { required: true })
-    core.debug(`current target branch = ${targetBranch}`)
+    const targetBranch = await core.getInput('target-branch', {
+      required: true
+    })
+    core.info(`current target branch = ${targetBranch}`)
     console.log(`current target branch = ${targetBranch}`)
     const currentBranch = await cmd.getCurrentBranch()
     const currentCommitMsg = await cmd.getCommitMessage()
+    core.info(`current ${currentBranch} - target branch = ${targetBranch}`)
+    console.log(`current ${currentBranch} - target branch = ${targetBranch}`)
 
-    if (targetBranch === currentBranch) {
-      core.debug('Start versioning..')
+    core.info(
+      `compare ${'main'.toLocaleLowerCase().localeCompare('main'.toLocaleLowerCase())}`
+    )
+    const asd = String.toString(currentBranch)
+    const adsa = String.toString(targetBranch)
+    core.info(`compare ${asd === adsa})}`)
+    core.info(`currentBranch typeof ${typeof currentBranch} `)
+    core.info(`targetBranch typeof ${typeof targetBranch} `)
+    if (String.toString(targetBranch) === String.toString(currentBranch)) {
+      core.info('Start versioning..')
       console.log('Start versioning..')
       if (currentCommitMsg.includes(PATCH_MSG)) {
-        core.debug('Executing new PATCH release...')
+        core.info('Executing new PATCH release...')
         console.log('Executing new PATCH release...')
         await cmd.execNpmVersion(PATCH_MSG)
       } else if (currentCommitMsg.includes(MAJOR_MSG)) {
         await cmd.execNpmVersion(MAJOR_MSG)
-        core.debug('Executing new MAJOR release...')
+        core.info('Executing new MAJOR release...')
         console.log('Executing new MAJOR release...')
       } else {
-        core.debug('Executing new MINOR release...')
+        core.info('Executing new MINOR release...')
         console.log('Executing new MINOR release...')
         await cmd.execNpmVersion()
       }
-      core.debug('Executing npm publish...')
+      core.info('Executing npm publish...')
       console.log('Executing npm publish...')
       await cmd.execNpmPublish()
-      core.debug('Executing git pushing...')
+      core.info('Executing git pushing...')
       console.log('Executing git pushing...')
       await cmd.execGitPush()
     } else {
-      core.debug(
+      core.info(`current ${currentBranch} - target branch = ${targetBranch}`)
+      console.log(`current ${currentBranch} - target branch = ${targetBranch}`)
+      core.info(
         `A new release version is only bumped on branch: ${targetBranch}`
       )
       console.log(
