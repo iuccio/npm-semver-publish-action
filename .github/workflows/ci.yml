@@ -58,7 +58,7 @@ jobs:
       - name: Test Local Action
         uses: actions/setup-node@v4
         with:
-          node-version: 21.x
+          node-version: 20.x
           registry-url: 'https://registry.npmjs.org'
       - name: Test action
         id: test-action
@@ -67,7 +67,6 @@ jobs:
           target-branch: main
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Print Output
         id: output
         run: new version "${{ steps.test-action.outputs.version }}"
