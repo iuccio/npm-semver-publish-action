@@ -3960,11 +3960,15 @@ const exec = __nccwpck_require__(514)
 const core = __nccwpck_require__(186)
 
 let output = ''
+let myError = ''
 
 const options = {}
 options.listeners = {
   stdout: data => {
     output = data.toString()
+  },
+  stderr: data => {
+    myError = data.toString()
   }
 }
 
@@ -3982,16 +3986,40 @@ async function getCommitMessage() {
   return output
 }
 
-async function execNpmPublish(versioningType) {
+async function execNpmVersion(versioningType) {
+  core.debug(`executing npmVersion with = ${versioningType}`)
+  console.log(`executing npmVersion with = ${versioningType}`)
   const RELEASE_COMMIT_MSG = 'new release [skip ci]'
   const verType = getVersioningType(versioningType)
+  core.debug(`calculated verType = ${verType}`)
+  console.log(`calculated verType = ${verType}`)
   await exec.exec(
     'npm',
-    ['version', verType, '--force', '-m', RELEASE_COMMIT_MSG],
+    ['version', 'patch', '--force', '-m', RELEASE_COMMIT_MSG],
     options
   )
+  core.debug(`npm = ${myError}`)
+  console.log(`npm = ${myError}`)
   core.debug(`npm = ${output}`)
   console.log(`npm = ${output}`)
+  return output
+}
+
+async function execNpmPublish() {
+  await exec.exec('npm', ['publish'], options)
+  core.debug(`new version ${output} succsessfully published`)
+  console.log(`new version ${output} succsessfully published`)
+  core.debug(`npm = ${myError}`)
+  console.log(`npm = ${myError}`)
+  return output
+}
+
+async function execGitPush() {
+  await exec.exec('git', ['push', '--follow-tags'], options)
+  core.debug(`git commit and tag succsessfully published: ${output}`)
+  console.log(`git commit and tag succsessfully published: ${output}`)
+  core.debug(`npm = ${myError}`)
+  console.log(`npm = ${myError}`)
   return output
 }
 
@@ -4005,7 +4033,13 @@ function getVersioningType(versioningType) {
   return 'minor'
 }
 
-module.exports = { getCommitMessage, getCurrentBranch, execNpmPublish }
+module.exports = {
+  getCommitMessage,
+  getCurrentBranch,
+  execNpmVersion,
+  execNpmPublish,
+  execGitPush
+}
 
 
 /***/ }),
@@ -4038,20 +4072,30 @@ async function run() {
       if (currentCommitMsg.includes(PATCH_MSG)) {
         core.debug('Executing new PATCH release...')
         console.log('Executing new PATCH release...')
-        cmd.execNpmPublish(PATCH_MSG)
+        await cmd.execNpmVersion(PATCH_MSG)
       } else if (currentCommitMsg.includes(MAJOR_MSG)) {
-        cmd.execNpmPublish(MAJOR_MSG)
+        await cmd.execNpmVersion(MAJOR_MSG)
         core.debug('Executing new MAJOR release...')
         console.log('Executing new MAJOR release...')
       } else {
         core.debug('Executing new MINOR release...')
         console.log('Executing new MINOR release...')
-        cmd.execNpmPublish()
+        await cmd.execNpmVersion()
       }
+      core.debug('Executing npm publish...')
+      console.log('Executing npm publish...')
+      await cmd.execNpmPublish()
+      core.debug('Executing git pushing...')
+      console.log('Executing git pushing...')
+      await cmd.execGitPush()
+    } else {
+      core.debug(
+        `A new release version is only bumped on branch: ${targetBranch}`
+      )
+      console.log(
+        `A new release version is only bumped on branch: ${targetBranch}`
+      )
     }
-
-    //exec.exec('npm', ['version', 'patch', '--force'])
-
     // Set outputs for other workflow steps to use
     core.setOutput('version', 'v.0.0.1')
   } catch (error) {

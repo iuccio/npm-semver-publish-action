@@ -47,9 +47,6 @@ async function run() {
         `A new release version is only bumped on branch: ${targetBranch}`
       )
     }
-
-    //exec.exec('npm', ['version', 'patch', '--force'])
-
     // Set outputs for other workflow steps to use
     core.setOutput('version', 'v.0.0.1')
   } catch (error) {
