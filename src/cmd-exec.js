@@ -29,8 +29,12 @@ async function getCommitMessage() {
 }
 
 async function execNpmVersion(versioningType) {
+  core.debug(`executing npmVersion with = ${versioningType}`)
+  console.log(`executing npmVersion with = ${versioningType}`)
   const RELEASE_COMMIT_MSG = 'new release [skip ci]'
   const verType = getVersioningType(versioningType)
+  core.debug(`calculated verType = ${verType}`)
+  console.log(`calculated verType = ${verType}`)
   await exec.exec(
     'npm',
     ['version', 'patch', '--force', '-m', RELEASE_COMMIT_MSG],
