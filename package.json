@@ -1,7 +1,7 @@
 {
   "name": "npm-semantic-publish-action",
   "description": "GitHub action to publish npm packages with semanantic versioning rules",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": "iuccio",
   "homepage": "https://github.com/iuccio/npm-semantic-publish-action#readme",
   "repository": {
