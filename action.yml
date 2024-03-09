@@ -1,9 +1,14 @@
 name: 'npm-semver-publish-action'
+
 description:
   'GitHub action to publish npm packages with semanantic versioning rules'
+
 author: 'iuccio'
 
-# Define your inputs here.
+branding:
+  color: blue
+  icon: package
+
 inputs:
   target-branch:
     description:
@@ -12,7 +17,6 @@ inputs:
     required: true
     default: 'master'
 
-# Define your outputs here.
 outputs:
   version:
     description: 'Published release version'
