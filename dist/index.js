@@ -3953,6 +3953,24 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ 97:
+/***/ ((module) => {
+
+function calculateVersionType(currentCommitMsg) {
+  if (currentCommitMsg.toLowerCase().includes('[PATCH]'.toLocaleLowerCase())) {
+    return 'patch'
+  }
+  if (currentCommitMsg.toLowerCase().includes('[MAJOR]'.toLowerCase())) {
+    return 'major'
+  }
+  return 'minor'
+}
+
+module.exports = { calculateVersionType }
+
+
+/***/ }),
+
 /***/ 915:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -3975,62 +3993,48 @@ options.listeners = {
 async function getCurrentBranch() {
   await exec.exec('git', ['rev-parse', '--abbrev-ref', 'HEAD'], options)
   core.debug(`current git branch namen = ${output}`)
-  console.log(`current git branch namen = ${output}`)
   return output
 }
 
 async function getCommitMessage() {
   await exec.exec('git', ['log', '-1', `--pretty=format:%s`], options)
   core.debug(`current git commit msg = ${output}`)
-  console.log(`current git commit msg = ${output}`)
   return output
 }
 
 async function execNpmVersion(versioningType) {
   core.debug(`executing npmVersion with = ${versioningType}`)
-  console.log(`executing npmVersion with = ${versioningType}`)
   const RELEASE_COMMIT_MSG = 'new release [skip ci]'
-  const verType = getVersioningType(versioningType)
-  core.debug(`calculated verType = ${verType}`)
-  console.log(`calculated verType = ${verType}`)
+  core.info(`Executing new ${versioningType.toUpperCase()} release...`)
   await exec.exec(
     'npm',
     ['version', 'patch', '--force', '-m', RELEASE_COMMIT_MSG],
     options
   )
   core.debug(`npm = ${myError}`)
-  console.log(`npm = ${myError}`)
   core.debug(`npm = ${output}`)
-  console.log(`npm = ${output}`)
   return output
 }
 
 async function execNpmPublish() {
   await exec.exec('npm', ['publish'], options)
   core.debug(`new version ${output} succsessfully published`)
-  console.log(`new version ${output} succsessfully published`)
   core.debug(`npm = ${myError}`)
-  console.log(`npm = ${myError}`)
   return output
 }
 
 async function execGitPush() {
   await exec.exec('git', ['push', '--follow-tags'], options)
   core.debug(`git commit and tag succsessfully published: ${output}`)
-  console.log(`git commit and tag succsessfully published: ${output}`)
   core.debug(`npm = ${myError}`)
-  console.log(`npm = ${myError}`)
   return output
 }
 
-function getVersioningType(versioningType) {
-  if (versioningType === '[PATCH]') {
-    return 'patch'
-  }
-  if (versioningType === '[MAJOR]') {
-    return 'major'
-  }
-  return 'minor'
+async function getLastTag() {
+  await exec.exec('git', ['describe', '--tags', '--abbrev=0'], options)
+  core.debug(`git commit and tag succsessfully published: ${output}`)
+  core.debug(`npm = ${myError}`)
+  return output
 }
 
 module.exports = {
@@ -4038,7 +4042,8 @@ module.exports = {
   getCurrentBranch,
   execNpmVersion,
   execNpmPublish,
-  execGitPush
+  execGitPush,
+  getLastTag
 }
 
 
@@ -4050,6 +4055,7 @@ module.exports = {
 const core = __nccwpck_require__(186)
 const exec = __nccwpck_require__(514)
 const cmd = __nccwpck_require__(915)
+const help = __nccwpck_require__(97)
 
 const PATCH_MSG = '[PATCH]'
 const MAJOR_MSG = '[MAJOR]'
@@ -4063,55 +4069,29 @@ async function run() {
     const targetBranch = await core.getInput('target-branch', {
       required: true
     })
-    core.info(`current target branch = ${targetBranch}`)
-    console.log(`current target branch = ${targetBranch}`)
     const currentBranch = await cmd.getCurrentBranch()
-    const currentCommitMsg = await cmd.getCommitMessage()
-    core.info(`current ${currentBranch} - target branch = ${targetBranch}`)
-    console.log(`current ${currentBranch} - target branch = ${targetBranch}`)
-
     core.info(
-      `compare ${'main'.toLocaleLowerCase().localeCompare('main'.toLocaleLowerCase())}`
+      `Target branch = ${targetBranch}. Current branch = ${currentBranch}`
     )
-    const asd = String.toString(currentBranch)
-    const adsa = String.toString(targetBranch)
-    core.info(`compare ${asd === adsa})}`)
-    core.info(`currentBranch typeof ${typeof currentBranch} `)
-    core.info(`targetBranch typeof ${typeof targetBranch} `)
+
+    const currentCommitMsg = await cmd.getCommitMessage()
     if (String.toString(targetBranch) === String.toString(currentBranch)) {
       core.info('Start versioning..')
-      console.log('Start versioning..')
-      if (currentCommitMsg.includes(PATCH_MSG)) {
-        core.info('Executing new PATCH release...')
-        console.log('Executing new PATCH release...')
-        await cmd.execNpmVersion(PATCH_MSG)
-      } else if (currentCommitMsg.includes(MAJOR_MSG)) {
-        await cmd.execNpmVersion(MAJOR_MSG)
-        core.info('Executing new MAJOR release...')
-        console.log('Executing new MAJOR release...')
-      } else {
-        core.info('Executing new MINOR release...')
-        console.log('Executing new MINOR release...')
-        await cmd.execNpmVersion()
-      }
+      const versioningTypeToApply = help.calculateVersionType(currentCommitMsg)
+      await cmd.execNpmVersion(versioningTypeToApply)
       core.info('Executing npm publish...')
-      console.log('Executing npm publish...')
       await cmd.execNpmPublish()
       core.info('Executing git pushing...')
-      console.log('Executing git pushing...')
       await cmd.execGitPush()
     } else {
-      core.info(`current ${currentBranch} - target branch = ${targetBranch}`)
-      console.log(`current ${currentBranch} - target branch = ${targetBranch}`)
       core.info(
         `A new release version is only bumped on branch: ${targetBranch}`
       )
-      console.log(
-        `A new release version is only bumped on branch: ${targetBranch}`
-      )
     }
+    const newVersionTag = await cmd.getLastTag()
+    core.info(`Succsessfully published new version: ${newVersionTag}`)
     // Set outputs for other workflow steps to use
-    core.setOutput('version', 'v.0.0.1')
+    core.setOutput('version', newVersionTag)
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
