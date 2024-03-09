@@ -7,8 +7,6 @@
 [![NPM Version](https://img.shields.io/npm/v/npm-semantic-publish-action.svg)](https://npmjs.org/package/npm-semantic-publish-action)
 [![Downloads](https://img.shields.io/npm/dm/npm-semantic-publish-action.svg)](https://npmjs.org/package/npm-semantic-publish-action)
 
-[![GitHub Super-Linter](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
-
 ## Table of Contents
 
 <!-- toc -->
