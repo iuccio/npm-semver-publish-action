@@ -47,12 +47,13 @@ steps:
       token: ${{ secrets.ACTION_TOKEN }}
   - uses: fregante/setup-git-user@v2 #used to add to git config user and mail
     uses: actions/setup-node@v4
+    with:
+      node-version: 20.x
+      registry-url: 'https://registry.npmjs.org'
   - name: Run my Action
     id: run-action
     uses: actions/npm-semver-publish-action@v1
     with:
-      node-version: 20.x
-      registry-url: 'https://registry.npmjs.org'
       target-branch: 'master'
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -76,12 +77,13 @@ jobs:
         token: ${{ secrets.ACTION_TOKEN }}
     - uses: fregante/setup-git-user@v2
       uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        registry-url: 'https://registry.npmjs.org'
     - name: Run my Action
       id: run-action
       uses: actions/npm-semver-publish-action@v1
       with:
-        node-version: 20.x
-        registry-url: 'https://registry.npmjs.org'
         target-branch: 'master'
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -91,11 +93,9 @@ jobs:
 
 See [action metadata file](action.yml)
 
-|     Name      |  Type  | Default  |                                                Description                                                |
-| :-----------: | :----: | :------: | :-------------------------------------------------------------------------------------------------------: |
-| target-branch | string |  master  | Branch name where npm publish with semanantic versioning should be applied to the GitHub Action execution |
-| registry-url  | string | no-value |                                     Registry to publish your package                                      |
-| node-version  | string | no-value |                                    node version to execute the action                                     |
+|     Name      |  Type  | Default |                                                Description                                                |
+| :-----------: | :----: | :-----: | :-------------------------------------------------------------------------------------------------------: |
+| target-branch | string | master  | Branch name where npm publish with semanantic versioning should be applied to the GitHub Action execution |
 
 ## Development
 
