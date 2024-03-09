@@ -15,6 +15,7 @@
   - [Table of Contents](#table-of-contents)
   - [Action Usage](#action-usage)
     - [Action Parameters](#action-parameters)
+    - [Semantic versioning over commit message](#semantic-versioning-over-commit-message)
   - [Development](#development)
   - [How to develop the GitHub Action](#how-to-develop-the-github-action)
   - [Validate the Action](#validate-the-action)
@@ -96,6 +97,23 @@ See [action metadata file](action.yml)
 |     Name      |  Type  | Default |                                                Description                                                |
 | :-----------: | :----: | :-----: | :-------------------------------------------------------------------------------------------------------: |
 | target-branch | string | master  | Branch name where npm publish with semanantic versioning should be applied to the GitHub Action execution |
+
+### Semantic versioning over commit message
+
+To generate a new version you have just to add to the commit message one of the
+following string:
+
+- **[MAJOR]** or **[major]**
+- **[PATCH]** or **[patch]**
+
+If the commit message contains the keyword:
+
+- **[MAJOR]** or **[major]**: new major relase, e.g. v1.0.0 -> v2.0.0
+- **[PATCH]** or **[patch]**: new patch relase, e.g. v1.0.0 -> v1.0.1
+- without any of the above keywords a new minor relase will be applied, e.g.
+  v1.0.0 -> v1.1.0
+
+An new version and its publishing is only exeuted on the defined **target-branch**
 
 ## Development
 
