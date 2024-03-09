@@ -4008,7 +4008,7 @@ async function execNpmVersion(versioningType) {
   core.info(`Executing new ${versioningType.toUpperCase()} release...`)
   await exec.exec(
     'npm',
-    ['version', 'patch', '--force', '-m', RELEASE_COMMIT_MSG],
+    ['version', versioningType, '--force', '-m', RELEASE_COMMIT_MSG],
     options
   )
   core.debug(`npm = ${myError}`)
