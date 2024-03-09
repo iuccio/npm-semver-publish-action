@@ -1,7 +1,103 @@
 # GitHub action to publish npm packages with semanantic versioning rules
 
+[![CI](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/ci.yml/badge.svg)](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/codeql-analysis.yml)
+[![Lint Codebase](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/linter.yml/badge.svg)](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/linter.yml)
+[![Check Transpiled JavaScript](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/check-dist.yml/badge.svg)](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/check-dist.yml)
+[![NPM Version](https://img.shields.io/npm/v/npm-semantic-publish-action.svg)](https://npmjs.org/package/npm-semantic-publish-action)
+[![Downloads](https://img.shields.io/npm/dm/npm-semantic-publish-action.svg)](https://npmjs.org/package/npm-semantic-publish-action)
+
 [![GitHub Super-Linter](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
-![CI](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/ci.yml/badge.svg)
+
+## Table of Contents
+
+<!-- toc -->
+
+- [GitHub action to publish npm packages with semanantic versioning rules](#github-action-to-publish-npm-packages-with-semanantic-versioning-rules)
+  - [Table of Contents](#table-of-contents)
+  - [Action Usage](#action-usage)
+    - [Action Parameters](#action-parameters)
+  - [Development](#development)
+  - [How to develop the GitHub Action](#how-to-develop-the-github-action)
+  - [Validate the Action](#validate-the-action)
+  - [License](#license)
+  - [Buy me a Coffee](#buy-me-a-coffee)
+
+<!-- tocstop -->
+
+## Action Usage
+
+1. generate an access token able to make commits, tags and push them (see
+   [Managing your personal access tokens](https://docs.github.com/en/enterprise-server@3.9/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens))
+1. add the above generated token in the secret **ACTION_TOKEN** (see
+   [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions))
+1. generate a new npm token able to publish
+   [Creating and viewing access tokens](https://docs.npmjs.com/creating-and-viewing-access-tokens)
+1. add the above generated token in the secret **NPM_TOKEN** (see
+   [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions))
+
+After generating and storing the above tokens, to include the
+**npm-semver-publish-action** in your workflow in your repository, simply add
+the following script in your action yaml file:
+
+```yaml
+steps:
+  - name: Checkout
+    id: checkout
+    uses: actions/checkout@v4
+    with:
+      token: ${{ secrets.ACTION_TOKEN }}
+  - uses: fregante/setup-git-user@v2 #used to add to git config user and mail
+    uses: actions/setup-node@v4
+  - name: Run my Action
+    id: run-action
+    uses: actions/npm-semver-publish-action@v1
+    with:
+      node-version: 20.x
+      registry-url: 'https://registry.npmjs.org'
+      target-branch: 'master'
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+Below a complete job example:
+
+```yaml
+on:
+  push:
+    branches: main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+      id: checkout
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.ACTION_TOKEN }}
+    - uses: fregante/setup-git-user@v2
+      uses: actions/setup-node@v4
+    - name: Run my Action
+      id: run-action
+      uses: actions/npm-semver-publish-action@v1
+      with:
+        node-version: 20.x
+        registry-url: 'https://registry.npmjs.org'
+        target-branch: 'master'
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+### Action Parameters
+
+See [action metadata file](action.yml)
+
+|     Name      |  Type  | Default  |                                                Description                                                |
+| :-----------: | :----: | :------: | :-------------------------------------------------------------------------------------------------------: |
+| target-branch | string |  master  | Branch name where npm publish with semanantic versioning should be applied to the GitHub Action execution |
+| registry-url  | string | no-value |                                     Registry to publish your package                                      |
+| node-version  | string | no-value |                                    node version to execute the action                                     |
 
 ## Development
 
@@ -20,62 +116,16 @@
 1. :white_check_mark: Run the tests
 
    ```bash
-   $ npm test
-
-   PASS  ./index.test.js
-     ✓ throws invalid number (3ms)
-     ✓ wait 500 ms (504ms)
-     ✓ test runs (95ms)
-
-   ...
+   npm test
    ```
 
-## Update the Action Metadata
+## How to develop the GitHub Action
 
-The [`action.yml`](action.yml) file defines metadata about your action, such as
-input(s) and output(s). For details about this file, see
-[Metadata syntax for GitHub Actions](https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions).
-
-When you copy this repository, update `action.yml` with the name, description,
-inputs, and outputs for your action.
-
-## Update the Action Code
-
-The [`src/`](./src/) directory is the heart of your action! This contains the
-source code that will be run when your action is invoked. You can replace the
-contents of this directory with your own code.
-
-There are a few things to keep in mind when writing your action code:
-
-- Most GitHub Actions toolkit and CI/CD operations are processed asynchronously.
-  In `main.js`, you will see that the action is run in an `async` function.
-
-  ```javascript
-  const core = require('@actions/core')
-  //...
-
-  async function run() {
-    try {
-      //...
-    } catch (error) {
-      core.setFailed(error.message)
-    }
-  }
-  ```
-
-  For more information about the GitHub Actions toolkit, see the
-  [documentation](https://github.com/actions/toolkit/blob/master/README.md).
-
-So, what are you waiting for? Go ahead and start customizing your action!
+[GitHub Actions Toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md).
 
 1. Create a new branch
-
-   ```bash
-   git checkout -b releases/v1
-   ```
-
-1. Replace the contents of `src/` with your action code
-1. Add tests to `__tests__/` for your source code
+1. Update the contents of `src/`
+1. Add tests to `__tests__/`
 1. Format, test, and build the action
 
    ```bash
@@ -107,12 +157,6 @@ So, what are you waiting for? Go ahead and start customizing your action!
 1. Create a pull request and get feedback on your action
 1. Merge the pull request into the `main` branch
 
-Your action is now published! :rocket:
-
-For information about versioning your action, see
-[Versioning](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-in the GitHub Actions toolkit.
-
 ## Validate the Action
 
 You can now validate the action by referencing it in a workflow file. For
@@ -129,40 +173,20 @@ steps:
     id: test-action
     uses: ./
     with:
-      milliseconds: 1000
+      target-branch: 'release'
 
   - name: Print Output
     id: output
-    run: echo "${{ steps.test-action.outputs.time }}"
+    run: echo "${{ steps.test-action.outputs.version }}"
 ```
 
-For example workflow runs, check out the
-[Actions tab](https://github.com/actions/javascript-action/actions)! :rocket:
+## License
 
-## Usage
+CSVtoJSON is licensed under the GNU General Public License v3.0
+[License](LICENSE).
 
-After testing, you can create version tag(s) that developers can use to
-reference different stable versions of your action. For more information, see
-[Versioning](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-in the GitHub Actions toolkit.
+## Buy me a Coffee
 
-To include the action in a workflow in another repository, you can use the
-`uses` syntax with the `@` symbol to reference a specific branch, tag, or commit
-hash.
+Just if you want to support this repository:
 
-```yaml
-steps:
-  - name: Checkout
-    id: checkout
-    uses: actions/checkout@v4
-
-  - name: Run my Action
-    id: run-action
-    uses: actions/javascript-action@v1 # Commit with the `v1` tag
-    with:
-      milliseconds: 1000
-
-  - name: Print Output
-    id: output
-    run: echo "${{ steps.run-action.outputs.time }}"
-```
+- **BTC** tip address: 37vdjQhbaR7k7XzhMKWzMcnqUxfw1njBNk
