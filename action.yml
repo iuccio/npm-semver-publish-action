@@ -1,7 +1,7 @@
-name: 'npm-semver-publish-action'
+name: 'npm-semver-publish'
 
 description:
-  'GitHub action to publish npm packages with semanantic versioning rules'
+  'npm publish with semanantic versioning rules'
 
 author: 'iuccio'
 
@@ -12,8 +12,7 @@ branding:
 inputs:
   target-branch:
     description:
-      'Branch name where npm publish with semanantic versioning should be
-      applied to the GitHub Action execution'
+      'Branch name new release should be executed'
     required: true
     default: 'master'
 
