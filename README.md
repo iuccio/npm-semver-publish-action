@@ -6,7 +6,7 @@
 [![Check Transpiled JavaScript](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/check-dist.yml/badge.svg)](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/check-dist.yml)
 [![NPM Version](https://img.shields.io/npm/v/npm-semantic-publish-action.svg)](https://npmjs.org/package/npm-semantic-publish-action)
 [![Downloads](https://img.shields.io/npm/dm/npm-semantic-publish-action.svg)](https://npmjs.org/package/npm-semantic-publish-action)
-[!Coverage](badges/coverage.svg)
+[![Coverage](badges/coverage.svg)](badges/coverage.svg)
 
 ## Table of Contents
 
@@ -38,12 +38,12 @@ Once your repository is configured with this action, to generate a new version
 you have just to add to the commit message one of the following string:
 
 - **[MAJOR]** or **[major]**: new major release, e.g. v1.0.0 -> v2.0.0
-  - `bash git commit -m "add best feature ever [major]"`
+  - `git commit -m "add best feature ever [major]"`
 - **[PATCH]** or **[patch]**: new patch release, e.g. v1.0.0 -> v1.0.1
-  - `bash git commit -m "fix best feature ever [patch]"`
+  - `git commit -m "fix best feature ever [patch]"`
 - without any of the above keywords a new minor release will be applied, e.g.
   v1.0.0 -> v1.1.0
-  - `bash git commit -m "update best feature ever"`
+  - `git commit -m "update best feature ever"`
 
 An new release is only exeuted on the defined **target-branch** (see **Action
 Usage**)
