@@ -6,6 +6,7 @@
 [![Check Transpiled JavaScript](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/check-dist.yml/badge.svg)](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/check-dist.yml)
 [![NPM Version](https://img.shields.io/npm/v/npm-semantic-publish-action.svg)](https://npmjs.org/package/npm-semantic-publish-action)
 [![Downloads](https://img.shields.io/npm/dm/npm-semantic-publish-action.svg)](https://npmjs.org/package/npm-semantic-publish-action)
+[!Coverage](badges/coverage.svg)
 
 ## Table of Contents
 
@@ -76,8 +77,8 @@ uses: actions/checkout@v4
 
 - Add an [actions/setup-node](https://github.com/actions/setup-node) step to
   your workflow. If you have one already, ensure that the registry-url input is
-  set (e.g. to https://registry.npmjs.org) so that this action can populate your
-  .npmrc with authentication info:
+  set (e.g. to [https://registry.npmjs.org](https://registry.npmjs.org)) so that
+  this action can populate your .npmrc with authentication info:
 
 ```yaml
 uses: actions/setup-node@v4
