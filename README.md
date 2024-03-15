@@ -98,7 +98,7 @@ uses: fregante/setup-git-user@v2
 ```yaml
 name: Run my Action
 id: run-action
-uses: actions/npm-semver-publish@v1
+uses: iuccio/npm-semver-publish-action@v1.0.0
 with:
   target-branch: 'master' #where a new release is applied
 env:
@@ -130,7 +130,7 @@ jobs:
         registry-url: 'https://registry.npmjs.org'
     - name: Run my Action
       id: run-action
-      uses: actions/npm-semver-publish@v1
+      uses: iuccio/npm-semver-publish-action@v1.0.0
       with:
         target-branch: 'master'
       env:
