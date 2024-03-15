@@ -14,8 +14,10 @@
 - [GitHub action to publish npm packages with semanantic versioning rules](#github-action-to-publish-npm-packages-with-semanantic-versioning-rules)
   - [Table of Contents](#table-of-contents)
   - [Action Usage](#action-usage)
+    - [Secrets Configuration](#secrets-configuration)
+    - [Action configuration](#action-configuration)
+    - [Complete job example](#complete-job-example)
     - [Action Parameters](#action-parameters)
-    - [Semantic versioning over commit message](#semantic-versioning-over-commit-message)
   - [Development](#development)
   - [How to develop the GitHub Action](#how-to-develop-the-github-action)
   - [Validate the Action](#validate-the-action)
@@ -24,43 +26,81 @@
 
 <!-- tocstop -->
 
+This action allow your project to create a new release, based on
+[semantic versionig](https://semver.org/) principles, and publish it to your npm
+registry.
+
+Once your repository is configured with this action, to generate a new version
+you have just to add to the commit message one of the following string:
+
+- **[MAJOR]** or **[major]**: new major relase, e.g. v1.0.0 -> v2.0.0
+- **[PATCH]** or **[patch]**: new patch relase, e.g. v1.0.0 -> v1.0.1
+- without any of the above keywords a new minor relase will be applied, e.g.
+  v1.0.0 -> v1.1.0
+
+An new release is only exeuted on the defined **target-branch** (see **Action
+Usage**)
+
 ## Action Usage
 
-1. generate an access token able to make commits, tags and push them (see
-   [Managing your personal access tokens](https://docs.github.com/en/enterprise-server@3.9/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens))
-1. add the above generated token in the secret **ACTION_TOKEN** (see
-   [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions))
-1. generate a new npm token able to publish
-   [Creating and viewing access tokens](https://docs.npmjs.com/creating-and-viewing-access-tokens)
-1. add the above generated token in the secret **NPM_TOKEN** (see
-   [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions))
+### Secrets Configuration
 
-After generating and storing the above tokens, to include the
-**npm-semver-publish-action** in your workflow in your repository, simply add
-the following script in your action yaml file:
+This action requires the following Secrets:
+
+1. **ACTION_TOKEN**:
+   1. generate an access token able to make commits, tags and push them (see
+      [Managing your personal access tokens](https://docs.github.com/en/enterprise-server@3.9/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens))
+   1. add the above generated token in the secret **ACTION_TOKEN** (see
+      [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions))
+1. **NPM_TOKEN**:
+   1. generate a new npm token able to publish
+      [Creating and viewing access tokens](https://docs.npmjs.com/creating-and-viewing-access-tokens)
+   1. add the above generated token in the secret **NPM_TOKEN** (see
+      [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions))
+
+### Action configuration
+
+1. Add to the checkout action the **ACTION_TOKEN** secret:
 
 ```yaml
-steps:
-  - name: Checkout
-    id: checkout
-    uses: actions/checkout@v4
+uses: actions/checkout@v4
     with:
       token: ${{ secrets.ACTION_TOKEN }}
-  - uses: fregante/setup-git-user@v2 #used to add to git config user and mail
-    uses: actions/setup-node@v4
-    with:
-      node-version: 20.x
-      registry-url: 'https://registry.npmjs.org'
-  - name: Run my Action
-    id: run-action
-    uses: actions/npm-semver-publish-action@v1
-    with:
-      target-branch: 'master'
-    env:
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-Below a complete job example:
+1. Add an [actions/setup-node](https://github.com/actions/setup-node) step to
+   your workflow. If you have one already, ensure that the registry-url input is
+   set (e.g. to https://registry.npmjs.org) so that this action can populate
+   your .npmrc with authentication info:
+
+```yaml
+uses: actions/setup-node@v4
+with:
+  node-version: 20.x
+  registry-url: 'https://registry.npmjs.org'
+```
+
+1. populate git config with user and mail:
+
+```yaml
+uses: fregante/setup-git-user@v2
+```
+
+1. add **actions/npm-semver-publish-action** step:
+
+```yaml
+name: Run my Action
+id: run-action
+uses: actions/npm-semver-publish-action@v1
+with:
+  target-branch: 'master' #where a new release is applied
+env:
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+That's it!
+
+### Complete job example
 
 ```yaml
 on:
@@ -97,23 +137,6 @@ See [action metadata file](action.yml)
 |     Name      |  Type  | Default |                                                Description                                                |
 | :-----------: | :----: | :-----: | :-------------------------------------------------------------------------------------------------------: |
 | target-branch | string | master  | Branch name where npm publish with semanantic versioning should be applied to the GitHub Action execution |
-
-### Semantic versioning over commit message
-
-To generate a new version you have just to add to the commit message one of the
-following string:
-
-- **[MAJOR]** or **[major]**
-- **[PATCH]** or **[patch]**
-
-If the commit message contains the keyword:
-
-- **[MAJOR]** or **[major]**: new major relase, e.g. v1.0.0 -> v2.0.0
-- **[PATCH]** or **[patch]**: new patch relase, e.g. v1.0.0 -> v1.0.1
-- without any of the above keywords a new minor relase will be applied, e.g.
-  v1.0.0 -> v1.1.0
-
-An new version and its publishing is only exeuted on the defined **target-branch**
 
 ## Development
 
