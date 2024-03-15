@@ -1,18 +1,18 @@
 {
-  "name": "npm-semantic-publish-action",
+  "name": "npm-semantic-publish",
   "description": "GitHub action to publish npm packages with semanantic versioning rules",
   "version": "0.6.0",
   "author": "iuccio",
-  "homepage": "https://github.com/iuccio/npm-semantic-publish-action#readme",
+  "homepage": "https://github.com/iuccio/npm-semver-publish-action#readme",
   "repository": {
     "type": "git",
-    "url": "git@github.com:iuccio/npm-semantic-publish-action.git"
+    "url": "git@github.com:iuccio/npm-semver-publish-action.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
   "bugs": {
-    "url": "https://github.com/iuccio/npm-semantic-publish-action/issues"
+    "url": "https://github.com/iuccio/npm-semver-publish-action/issues"
   },
   "keywords": [
     "GitHub",
@@ -23,6 +23,7 @@
     "semantic",
     "versioning",
     "semanantic versioning",
+    "semver",
     "release"
   ],
   "exports": {
