@@ -13,6 +13,7 @@
 
 - [GitHub action to publish npm packages with semanantic versioning rules](#github-action-to-publish-npm-packages-with-semanantic-versioning-rules)
   - [Table of Contents](#table-of-contents)
+  - [Semantic versioning over commit message](#semantic-versioning-over-commit-message)
   - [Action Usage](#action-usage)
     - [Secrets Configuration](#secrets-configuration)
     - [Action configuration](#action-configuration)
@@ -30,13 +31,18 @@ This action allow your project to create a new release, based on
 [semantic versionig](https://semver.org/) principles, and publish it to your npm
 registry.
 
+## Semantic versioning over commit message
+
 Once your repository is configured with this action, to generate a new version
 you have just to add to the commit message one of the following string:
 
-- **[MAJOR]** or **[major]**: new major relase, e.g. v1.0.0 -> v2.0.0
-- **[PATCH]** or **[patch]**: new patch relase, e.g. v1.0.0 -> v1.0.1
-- without any of the above keywords a new minor relase will be applied, e.g.
+- **[MAJOR]** or **[major]**: new major release, e.g. v1.0.0 -> v2.0.0
+  - `bash git commit -m "add best feature ever [major]"`
+- **[PATCH]** or **[patch]**: new patch release, e.g. v1.0.0 -> v1.0.1
+  - `bash git commit -m "fix best feature ever [patch]"`
+- without any of the above keywords a new minor release will be applied, e.g.
   v1.0.0 -> v1.1.0
+  - `bash git commit -m "update best feature ever"`
 
 An new release is only exeuted on the defined **target-branch** (see **Action
 Usage**)
@@ -60,7 +66,7 @@ This action requires the following Secrets:
 
 ### Action configuration
 
-1. Add to the checkout action the **ACTION_TOKEN** secret:
+- Add to the checkout action the **ACTION_TOKEN** secret:
 
 ```yaml
 uses: actions/checkout@v4
@@ -68,10 +74,10 @@ uses: actions/checkout@v4
       token: ${{ secrets.ACTION_TOKEN }}
 ```
 
-1. Add an [actions/setup-node](https://github.com/actions/setup-node) step to
-   your workflow. If you have one already, ensure that the registry-url input is
-   set (e.g. to https://registry.npmjs.org) so that this action can populate
-   your .npmrc with authentication info:
+- Add an [actions/setup-node](https://github.com/actions/setup-node) step to
+  your workflow. If you have one already, ensure that the registry-url input is
+  set (e.g. to https://registry.npmjs.org) so that this action can populate your
+  .npmrc with authentication info:
 
 ```yaml
 uses: actions/setup-node@v4
@@ -80,18 +86,18 @@ with:
   registry-url: 'https://registry.npmjs.org'
 ```
 
-1. populate git config with user and mail:
+- populate git config with user and mail:
 
 ```yaml
 uses: fregante/setup-git-user@v2
 ```
 
-1. add **actions/npm-semver-publish-action** step:
+- add **actions/npm-semver-publish** step:
 
 ```yaml
 name: Run my Action
 id: run-action
-uses: actions/npm-semver-publish-action@v1
+uses: actions/npm-semver-publish@v1
 with:
   target-branch: 'master' #where a new release is applied
 env:
@@ -123,7 +129,7 @@ jobs:
         registry-url: 'https://registry.npmjs.org'
     - name: Run my Action
       id: run-action
-      uses: actions/npm-semver-publish-action@v1
+      uses: actions/npm-semver-publish@v1
       with:
         target-branch: 'master'
       env:
@@ -132,27 +138,27 @@ jobs:
 
 ### Action Parameters
 
-See [action metadata file](action.yml)
+See [action.yml](action.yml)
 
-|     Name      |  Type  | Default |                                                Description                                                |
-| :-----------: | :----: | :-----: | :-------------------------------------------------------------------------------------------------------: |
-| target-branch | string | master  | Branch name where npm publish with semanantic versioning should be applied to the GitHub Action execution |
+|     Name      |  Type  | Default |                Description                 |
+| :-----------: | :----: | :-----: | :----------------------------------------: |
+| target-branch | string | master  | Branch name new release should be executed |
 
 ## Development
 
-1. :hammer_and_wrench: Install the dependencies
+1. Install the dependencies
 
    ```bash
    npm install
    ```
 
-1. :building_construction: Package the JavaScript for distribution
+1. Package the JavaScript for distribution
 
    ```bash
    npm run bundle
    ```
 
-1. :white_check_mark: Run the tests
+1. Run the tests
 
    ```bash
    npm test
