@@ -6,10 +6,7 @@ const main = require('../src/main')
 const cmd = require('../src/cmd-exec')
 
 // Mock the GitHub Actions core library
-const debugMock = jest.spyOn(core, 'debug').mockImplementation()
 const getInputMock = jest.spyOn(core, 'getInput').mockImplementation()
-const setFailedMock = jest.spyOn(core, 'setFailed').mockImplementation()
-const setOutputMock = jest.spyOn(core, 'setOutput').mockImplementation()
 const getCurrentBranchMock = jest
   .spyOn(cmd, 'getCurrentBranch')
   .mockImplementation()
@@ -27,7 +24,7 @@ describe('action', () => {
     jest.clearAllMocks()
   })
 
-  it('execute action', async () => {
+  it('should execute action on target branch', async () => {
     //given
     getInputMock.mockImplementation(name => {
       return 'master'
@@ -41,8 +38,12 @@ describe('action', () => {
     execNpmPublish.mockImplementation(name => {
       return 'v.0.0.1'
     })
-    execNpmVersion.mockImplementation({})
-    execGitPush.mockImplementation({})
+    execNpmVersion.mockImplementation(name => {
+      return 'v.0.0.1'
+    })
+    execGitPush.mockImplementation(name => {
+      return {}
+    })
     //when
     await main.run()
 
