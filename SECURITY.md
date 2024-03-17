@@ -1,7 +1,7 @@
 # Security Policy
 
-A Github Dependabot is enabled and inform us when a security vulnerability
-affects this repository. A generated Github Depedabot PR is normally quickly
+A GitHub Dependabot is enabled and inform us when a security vulnerability
+affects this repository. A generated GitHub Depedabot PR is normally quickly
 merged and a new version is released.
 
 ## Supported Versions
