@@ -8,6 +8,8 @@
 [![Downloads](https://img.shields.io/npm/dm/npm-semantic-publish-action.svg)](https://npmjs.org/package/npm-semantic-publish-action)
 [![Coverage](badges/coverage.svg)](badges/coverage.svg)
 
+[![Marketplace](https://img.shields.io/badge/GitHub_Action_-iuccio%2Fnpm--semantic--publish--action%40latest-2ea44f)](https://github.com/marketplace/actions/npm-semver-publish)
+
 ## Table of Contents
 
 <!-- toc -->

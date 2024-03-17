@@ -1,7 +1,8 @@
 # Security Policy
 
-A Github Dependabot is enabled and inform us when a security vulnerability affects this repository. 
-A generated Github Depedabot PR is normally quickly merged and a new version is released.
+A Github Dependabot is enabled and inform us when a security vulnerability
+affects this repository. A generated Github Depedabot PR is normally quickly
+merged and a new version is released.
 
 ## Supported Versions
 
@@ -17,4 +18,5 @@ currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
-To report a Security Vulnerability please add an [Vulnerabilty Issue](https://github.com/iuccio/npm-semver-publish-action/labels/vulnerabilty).  
+To report a Security Vulnerability please add an
+[Vulnerabilty Issue](https://github.com/iuccio/npm-semver-publish-action/labels/vulnerabilty).
