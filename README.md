@@ -5,7 +5,7 @@
 [![Lint Codebase](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/linter.yml/badge.svg)](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/linter.yml)
 [![Check Transpiled JavaScript](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/check-dist.yml/badge.svg)](https://github.com/iuccio/npm-semantic-publish-action/actions/workflows/check-dist.yml)
 [![NPM Version](https://img.shields.io/npm/v/npm-semantic-publish.svg)](https://npmjs.org/package/npm-semantic-publish)
-[![Downloads](https://img.shields.io/npm/dm/npm-semantic-publish-action.svg)](https://npmjs.org/package/npm-semantic-publish-action)
+[![Downloads](https://img.shields.io/npm/dm/npm-semantic-publish.svg)](https://npmjs.org/package/npm-semantic-publish)
 [![Coverage](badges/coverage.svg)](badges/coverage.svg)
 
 [![Marketplace](https://img.shields.io/badge/GitHub_Action_-iuccio%2Fnpm--semantic--publish--action%40latest-2ea44f)](https://github.com/marketplace/actions/npm-semver-publish)
