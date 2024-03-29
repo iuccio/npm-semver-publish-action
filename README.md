@@ -10,7 +10,9 @@
 
 [![Marketplace](https://img.shields.io/badge/GitHub_Action_-iuccio%2Fnpm--semantic--publish--action%40latest-2ea44f)](https://github.com/marketplace/actions/npm-semver-publish)
 
-Please consider following this project's author, [Antò](https://github.com/iuccio), and consider starring the project to show your :heart: and support.
+Please consider following this project's author,
+[Antò](https://github.com/iuccio), and consider starring the project to show
+your :heart: and support.
 
 ## Table of Contents
 
@@ -121,6 +123,8 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - name: Checkout
       id: checkout
@@ -150,6 +154,14 @@ See [action.yml](action.yml)
 | :-----------: | :----: | :-----: | :----------------------------------------: |
 | target-branch | string | master  | Branch name new release should be executed |
 |  provenance   | string |  false  |           NPM package provenance           |
+
+When the Action Parameter **provenance** is set to true the **id-token**
+permission must be set to **write**:
+
+```yaml
+permissions:
+  id-token: write
+```
 
 ## Development
 
