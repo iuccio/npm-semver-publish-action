@@ -10,6 +10,8 @@
 
 [![Marketplace](https://img.shields.io/badge/GitHub_Action_-iuccio%2Fnpm--semantic--publish--action%40latest-2ea44f)](https://github.com/marketplace/actions/npm-semver-publish)
 
+Please consider following this project's author, [Antò](https://github.com/iuccio), and consider starring the project to show your :heart: and support.
+
 ## Table of Contents
 
 <!-- toc -->
@@ -134,7 +136,8 @@ jobs:
       id: run-action
       uses: iuccio/npm-semver-publish-action@v1.0.0
       with:
-        target-branch: 'master'
+        target-branch: master
+        provenance: true
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
@@ -146,6 +149,7 @@ See [action.yml](action.yml)
 |     Name      |  Type  | Default |                Description                 |
 | :-----------: | :----: | :-----: | :----------------------------------------: |
 | target-branch | string | master  | Branch name new release should be executed |
+|  provenance   | string |  false  |           NPM package provenance           |
 
 ## Development
 

@@ -4016,8 +4016,13 @@ async function execNpmVersion(versioningType) {
   return output
 }
 
-async function execNpmPublish() {
-  await exec.exec('npm', ['publish'], options)
+async function execNpmPublish(provenance) {
+  if (Boolean(provenance) === true) {
+    core.debug(`Executing publishing with provenance`)
+    await exec.exec('npm', ['publish', '--provenance'], options)
+  } else {
+    await exec.exec('npm', ['publish'], options)
+  }
   core.debug(`new version ${output} succsessfully published`)
   core.debug(`npm = ${myError}`)
   return output
@@ -4069,6 +4074,9 @@ async function run() {
     const targetBranch = await core.getInput('target-branch', {
       required: true
     })
+    const provenance = await core.getInput('provenance', {
+      required: false
+    })
     const currentBranch = await cmd.getCurrentBranch()
     core.info(
       `Target branch = ${targetBranch}. Current branch = ${currentBranch}`
@@ -4080,7 +4088,7 @@ async function run() {
       const versioningTypeToApply = help.calculateVersionType(currentCommitMsg)
       await cmd.execNpmVersion(versioningTypeToApply)
       core.info('Executing npm publish...')
-      await cmd.execNpmPublish()
+      await cmd.execNpmPublish(provenance)
       core.info('Executing git pushing...')
       await cmd.execGitPush()
     } else {

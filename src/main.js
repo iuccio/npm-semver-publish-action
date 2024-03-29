@@ -15,6 +15,9 @@ async function run() {
     const targetBranch = await core.getInput('target-branch', {
       required: true
     })
+    const provenance = await core.getInput('provenance', {
+      required: false
+    })
     const currentBranch = await cmd.getCurrentBranch()
     core.info(
       `Target branch = ${targetBranch}. Current branch = ${currentBranch}`
@@ -26,7 +29,7 @@ async function run() {
       const versioningTypeToApply = help.calculateVersionType(currentCommitMsg)
       await cmd.execNpmVersion(versioningTypeToApply)
       core.info('Executing npm publish...')
-      await cmd.execNpmPublish()
+      await cmd.execNpmPublish(provenance)
       core.info('Executing git pushing...')
       await cmd.execGitPush()
     } else {

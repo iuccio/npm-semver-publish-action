@@ -1,7 +1,6 @@
 name: 'npm-semver-publish'
 
-description:
-  'npm publish with semanantic versioning rules'
+description: 'npm publish with semanantic versioning rules'
 
 author: 'iuccio'
 
@@ -11,10 +10,15 @@ branding:
 
 inputs:
   target-branch:
-    description:
-      'Branch name new release should be executed'
+    description: 'Branch name new release should be executed'
     required: true
     default: 'master'
+  provenance:
+    description:
+      'Allows you to publicly establish where a package was built and who
+      published a package'
+    required: false
+    default: 'false'
 
 outputs:
   version:

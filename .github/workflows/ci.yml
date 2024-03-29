@@ -70,3 +70,4 @@ jobs:
         uses: ./
         with:
           target-branch: main
+          provenance: true

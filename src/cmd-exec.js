@@ -40,8 +40,13 @@ async function execNpmVersion(versioningType) {
   return output
 }
 
-async function execNpmPublish() {
-  await exec.exec('npm', ['publish'], options)
+async function execNpmPublish(provenance) {
+  if (Boolean(provenance) === true) {
+    core.debug(`Executing publishing with provenance`)
+    await exec.exec('npm', ['publish', '--provenance'], options)
+  } else {
+    await exec.exec('npm', ['publish'], options)
+  }
   core.debug(`new version ${output} succsessfully published`)
   core.debug(`npm = ${myError}`)
   return output
