@@ -41,8 +41,8 @@ registry.
 
 ## Semantic versioning over commit message
 
-Once your repository is configured with this action, to generate a new version
-you have just to add to the commit message one of the following string:
+To generate a new version, git tag and npm package publishing, you have just to
+add to the commit message one of the following string:
 
 - **[MAJOR]** or **[major]**: new major release, e.g. v1.0.0 -> v2.0.0
   - `git commit -m "add best feature ever [major]"`
@@ -59,13 +59,12 @@ Usage**)
 
 ### Secrets Configuration
 
-This action requires the following Secrets:
+This action requires the **NPM_TOKEN** secret configuretion:
 
-1. **NPM_TOKEN**:
-   1. generate a new npm token able to publish
-      [Creating and viewing access tokens](https://docs.npmjs.com/creating-and-viewing-access-tokens)
-   1. add the above generated token in the secret **NPM_TOKEN** (see
-      [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions))
+1. generate a new npm token able to publish
+   [Creating and viewing access tokens](https://docs.npmjs.com/creating-and-viewing-access-tokens)
+1. add the above generated token in the secret **NPM_TOKEN** (see
+   [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions))
 
 ### Action configuration
 
