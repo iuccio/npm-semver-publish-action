@@ -51,12 +51,12 @@ jobs:
       actions: write
       contents: read
       id-token: write
-      repository-projects: write
 
     steps:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
+
       - name: Test Local Action
         uses: actions/setup-node@v4
         with:
