@@ -20,15 +20,15 @@ show your :heart: and support.
 - [GitHub action to publish npm packages with semanantic versioning rules](#github-action-to-publish-npm-packages-with-semanantic-versioning-rules)
   - [Table of Contents](#table-of-contents)
   - [Semantic versioning over commit message](#semantic-versioning-over-commit-message)
-  - [Action Usage](#action-usage)
-    - [Secrets Configuration](#secrets-configuration)
-    - [Action configuration](#action-configuration)
-      - [Step 1](#step-1)
-      - [Step 2](#step-2)
-      - [Step3](#step3)
-      - [Step 4](#step-4)
-    - [Complete job example](#complete-job-example)
+  - [Action usage](#action-usage)
     - [Action Parameters](#action-parameters)
+    - [Complete action example](#complete-action-example)
+  - [Action configuration Step-by-Step](#action-configuration-step-by-step)
+    - [Step1 - Secrets Configuration](#step1---secrets-configuration)
+    - [Step 2](#step-2)
+    - [Step 3](#step-3)
+    - [Step 4](#step-4)
+    - [Step 5](#step-5)
   - [Development](#development)
   - [License](#license)
   - [Buy me a Coffee](#buy-me-a-coffee)
@@ -41,88 +41,45 @@ registry.
 
 ## Semantic versioning over commit message
 
-To generate a new version, git tag and npm package publishing, you have just to
-add to the commit message one of the following string:
+To generate a new version (git tag and npm package publishing), you have just to
+add to the commit message one of the following key:
 
-- **[MAJOR]** or **[major]**: new major release, e.g. v1.0.0 -> v2.0.0
+- **[MAJOR]** or **[major]**: new major release, e.g. v1.0.0 -> v2.0.0 will be executed
   - `git commit -m "add best feature ever [major]"`
-- **[PATCH]** or **[patch]**: new patch release, e.g. v1.0.0 -> v1.0.1
+- **[PATCH]** or **[patch]**: new patch release, e.g. v1.0.0 -> v1.0.1 will be executed
   - `git commit -m "fix best feature ever [patch]"`
-- without any of the above keywords a new minor release will be applied, e.g.
+- without any of the above keywords a new minor release will be executed, e.g.
   v1.0.0 -> v1.1.0
   - `git commit -m "update best feature ever"`
 
 An new release is only exeuted on the defined **target-branch** (see **Action
 Usage**)
 
-## Action Usage
+## Action usage
 
-### Secrets Configuration
+### Action Parameters
 
-This action requires the **NPM_TOKEN** secret configuretion:
+See [action.yml](action.yml)
 
-1. generate a new npm token able to publish
-   [Creating and viewing access tokens](https://docs.npmjs.com/creating-and-viewing-access-tokens)
-1. add the above generated token in the secret **NPM_TOKEN** (see
-   [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions))
+|     Name      |  Type  | Default |                Description                 |
+| :-----------: | :----: | :-----: | :----------------------------------------: |
+| target-branch | string | master  | Branch name new release should be executed |
+|  provenance   | string |  false  |           NPM package provenance           |
 
-### Action configuration
-
-#### Step 1
-
-Add permissions to to push on git and publish on npm
+:heavy_exclamation_mark: When the Action Parameter **provenance** is set to true
+the **id-token** permission must be set to **write**:
 
 ```yaml
 permissions:
-  contents: write
   id-token: write
 ```
 
-#### Step 2
-
-Add to the checkout action:
-
-```yaml
-uses: actions/checkout@v4
-```
-
-#### Step3
-
-Add an [actions/setup-node](https://github.com/actions/setup-node) step to your
-workflow. If you have one already, ensure that the registry-url input is set
-(e.g. to [https://registry.npmjs.org](https://registry.npmjs.org)) so that this
-action can populate your .npmrc with authentication info:
-
-```yaml
-uses: actions/setup-node@v4
-with:
-  node-version: 20.x
-  registry-url: 'https://registry.npmjs.org'
-```
-
-#### Step 4
-
-add **actions/npm-semver-publish** step:
-
-```yaml
-name: Run my Action
-id: run-action
-uses: iuccio/npm-semver-publish-action@v1.0.0
-with:
-  target-branch: 'master' #where a new release is applied
-  provenance: true #if you want to publish on npm registry the provenance
-env:
-  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-```
-
-That's it!
-
-### Complete job example
+### Complete action example
 
 ```yaml
 on:
   push:
-    branches: main
+    branches: master #the branch name must be the same of **target-branch**
 
 jobs:
   publish:
@@ -148,22 +105,65 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-### Action Parameters
+## Action configuration Step-by-Step
 
-See [action.yml](action.yml)
+### Step1 - Secrets Configuration
 
-|     Name      |  Type  | Default |                Description                 |
-| :-----------: | :----: | :-----: | :----------------------------------------: |
-| target-branch | string | master  | Branch name new release should be executed |
-|  provenance   | string |  false  |           NPM package provenance           |
+This action requires the **NPM_TOKEN** secret configuretion:
 
-When the Action Parameter **provenance** is set to true the **id-token**
-permission must be set to **write**:
+1. generate a new npm token able to publish
+   [Creating and viewing access tokens](https://docs.npmjs.com/creating-and-viewing-access-tokens)
+1. add the above generated token in the secret **NPM_TOKEN** (see
+   [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions))
+
+### Step 2
+
+Add permissions to to push on git and publish on npm
 
 ```yaml
 permissions:
+  contents: write
   id-token: write
 ```
+
+### Step 3
+
+Add to the checkout action:
+
+```yaml
+uses: actions/checkout@v4
+```
+
+### Step 4
+
+Add an [actions/setup-node](https://github.com/actions/setup-node) step to your
+workflow. If you have one already, ensure that the registry-url input is set
+(e.g. to [https://registry.npmjs.org](https://registry.npmjs.org)) so that this
+action can populate your .npmrc with authentication info:
+
+```yaml
+uses: actions/setup-node@v4
+with:
+  node-version: 20.x
+  registry-url: 'https://registry.npmjs.org'
+```
+
+### Step 5
+
+add **actions/npm-semver-publish** step:
+
+```yaml
+name: Run my Action
+id: run-action
+uses: iuccio/npm-semver-publish-action@v1.0.0
+with:
+  target-branch: 'master' #where a new release is applied
+  provenance: true #if you want to publish on npm registry the provenance
+env:
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+That's it!
 
 ## Development
 
