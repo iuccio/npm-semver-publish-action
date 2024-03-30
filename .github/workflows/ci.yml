@@ -51,12 +51,14 @@ jobs:
       actions: write
       contents: read
       id-token: write
-      packages: write
 
     steps:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ACTION_TOKEN }}
+
       - name: Test Local Action
         uses: actions/setup-node@v4
         with:
