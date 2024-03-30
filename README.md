@@ -93,12 +93,6 @@ with:
   registry-url: 'https://registry.npmjs.org'
 ```
 
-- populate git config with user and mail:
-
-```yaml
-uses: fregante/setup-git-user@v2
-```
-
 - add **actions/npm-semver-publish** step:
 
 ```yaml
@@ -131,7 +125,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         token: ${{ secrets.ACTION_TOKEN }}
-    - uses: fregante/setup-git-user@v2
       uses: actions/setup-node@v4
       with:
         node-version: 20.x
