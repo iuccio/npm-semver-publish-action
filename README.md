@@ -23,11 +23,13 @@ show your :heart: and support.
   - [Action Usage](#action-usage)
     - [Secrets Configuration](#secrets-configuration)
     - [Action configuration](#action-configuration)
+      - [Step 1](#step-1)
+      - [Step 2](#step-2)
+      - [Step3](#step3)
+      - [Step 4](#step-4)
     - [Complete job example](#complete-job-example)
     - [Action Parameters](#action-parameters)
   - [Development](#development)
-  - [How to develop the GitHub Action](#how-to-develop-the-github-action)
-  - [Validate the Action](#validate-the-action)
   - [License](#license)
   - [Buy me a Coffee](#buy-me-a-coffee)
 
@@ -59,11 +61,6 @@ Usage**)
 
 This action requires the following Secrets:
 
-1. **ACTION_TOKEN**:
-   1. generate an access token able to make commits, tags and push them (see
-      [Managing your personal access tokens](https://docs.github.com/en/enterprise-server@3.9/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens))
-   1. add the above generated token in the secret **ACTION_TOKEN** (see
-      [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions))
 1. **NPM_TOKEN**:
    1. generate a new npm token able to publish
       [Creating and viewing access tokens](https://docs.npmjs.com/creating-and-viewing-access-tokens)
@@ -72,18 +69,30 @@ This action requires the following Secrets:
 
 ### Action configuration
 
-- Add to the checkout action the **ACTION_TOKEN** secret:
+#### Step 1
+
+Add permissions to to push on git and publish on npm
+
+```yaml
+permissions:
+  contents: write
+  id-token: write
+```
+
+#### Step 2
+
+Add to the checkout action:
 
 ```yaml
 uses: actions/checkout@v4
-    with:
-      token: ${{ secrets.ACTION_TOKEN }}
 ```
 
-- Add an [actions/setup-node](https://github.com/actions/setup-node) step to
-  your workflow. If you have one already, ensure that the registry-url input is
-  set (e.g. to [https://registry.npmjs.org](https://registry.npmjs.org)) so that
-  this action can populate your .npmrc with authentication info:
+#### Step3
+
+Add an [actions/setup-node](https://github.com/actions/setup-node) step to your
+workflow. If you have one already, ensure that the registry-url input is set
+(e.g. to [https://registry.npmjs.org](https://registry.npmjs.org)) so that this
+action can populate your .npmrc with authentication info:
 
 ```yaml
 uses: actions/setup-node@v4
@@ -92,7 +101,9 @@ with:
   registry-url: 'https://registry.npmjs.org'
 ```
 
-- add **actions/npm-semver-publish** step:
+#### Step 4
+
+add **actions/npm-semver-publish** step:
 
 ```yaml
 name: Run my Action
@@ -100,6 +111,7 @@ id: run-action
 uses: iuccio/npm-semver-publish-action@v1.0.0
 with:
   target-branch: 'master' #where a new release is applied
+  provenance: true #if you want to publish on npm registry the provenance
 env:
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
@@ -157,84 +169,7 @@ permissions:
 
 ## Development
 
-1. Install the dependencies
-
-   ```bash
-   npm install
-   ```
-
-1. Package the JavaScript for distribution
-
-   ```bash
-   npm run bundle
-   ```
-
-1. Run the tests
-
-   ```bash
-   npm test
-   ```
-
-## How to develop the GitHub Action
-
-[GitHub Actions Toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md).
-
-1. Create a new branch
-1. Update the contents of `src/`
-1. Add tests to `__tests__/`
-1. Format, test, and build the action
-
-   ```bash
-   npm run all
-   ```
-
-   > [!WARNING]
-   >
-   > This step is important! It will run [`ncc`](https://github.com/vercel/ncc)
-   > to build the final JavaScript action code with all dependencies included.
-   > If you do not run this step, your action will not work correctly when it is
-   > used in a workflow. This step also includes the `--license` option for
-   > `ncc`, which will create a license file for all of the production node
-   > modules used in your project.
-
-1. Commit your changes
-
-   ```bash
-   git add .
-   git commit -m "My first action is ready!"
-   ```
-
-1. Push them to your repository
-
-   ```bash
-   git push -u origin releases/v1
-   ```
-
-1. Create a pull request and get feedback on your action
-1. Merge the pull request into the `main` branch
-
-## Validate the Action
-
-You can now validate the action by referencing it in a workflow file. For
-example, [`ci.yml`](./.github/workflows/ci.yml) demonstrates how to reference an
-action in the same repository.
-
-```yaml
-steps:
-  - name: Checkout
-    id: checkout
-    uses: actions/checkout@v3
-
-  - name: Test Local Action
-    id: test-action
-    uses: ./
-    with:
-      target-branch: 'release'
-
-  - name: Print Output
-    id: output
-    run: echo "${{ steps.test-action.outputs.version }}"
-```
+See [Development](DEVELOPMENT.md) for more information.
 
 ## License
 
