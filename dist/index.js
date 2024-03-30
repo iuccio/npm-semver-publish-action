@@ -4055,7 +4055,7 @@ async function setupGitConfig() {
   )
   await exec.exec(
     'git',
-    ['config', '--global', 'user.name', 'GitHub Actions'],
+    ['config', '--global', 'user.name', 'dependabot'],
     options
   )
   core.debug(`git config user configured: ${output}`)
