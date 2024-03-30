@@ -44,9 +44,11 @@ registry.
 To generate a new version (git tag and npm package publishing), you have just to
 add to the commit message one of the following key:
 
-- **[MAJOR]** or **[major]**: new major release, e.g. v1.0.0 -> v2.0.0 will be executed
+- **[MAJOR]** or **[major]**: new major release, e.g. v1.0.0 -> v2.0.0 will be
+  executed
   - `git commit -m "add best feature ever [major]"`
-- **[PATCH]** or **[patch]**: new patch release, e.g. v1.0.0 -> v1.0.1 will be executed
+- **[PATCH]** or **[patch]**: new patch release, e.g. v1.0.0 -> v1.0.1 will be
+  executed
   - `git commit -m "fix best feature ever [patch]"`
 - without any of the above keywords a new minor release will be executed, e.g.
   v1.0.0 -> v1.1.0
@@ -102,7 +104,7 @@ jobs:
         target-branch: master
         provenance: true
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} #npm token
 ```
 
 ## Action configuration Step-by-Step
