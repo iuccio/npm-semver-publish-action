@@ -12,6 +12,7 @@ const MAJOR_MSG = '[MAJOR]'
  */
 async function run() {
   try {
+    await cmd.setupGitConfig()
     const targetBranch = await core.getInput('target-branch', {
       required: true
     })
