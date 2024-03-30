@@ -128,13 +128,12 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
+      contents: write
       id-token: write
     steps:
       - name: Checkout
       id: checkout
       uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.ACTION_TOKEN }}
       uses: actions/setup-node@v4
       with:
         node-version: 20.x
