@@ -51,6 +51,7 @@ jobs:
       actions: write
       contents: read
       id-token: write
+      repository-projects: write
 
     steps:
       - name: Checkout
