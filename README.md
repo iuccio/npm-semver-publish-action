@@ -128,19 +128,19 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      id-token: write
+      contents: write #allow to push on git repo
+      id-token: write #allow to publish npm package
     steps:
       - name: Checkout
       id: checkout
-      uses: actions/checkout@v4
-      uses: actions/setup-node@v4
+      uses: actions/checkout@v4 #checkout git repo
+      uses: actions/setup-node@v4 #setup node env
       with:
         node-version: 20.x
         registry-url: 'https://registry.npmjs.org'
     - name: Run my Action
       id: run-action
-      uses: iuccio/npm-semver-publish-action@v1.0.0
+      uses: iuccio/npm-semver-publish-action@v1.0.0 #execute npm semver publish
       with:
         target-branch: master
         provenance: true
