@@ -74,4 +74,11 @@ describe('command exec', () => {
 
     expect(exec.exec).toHaveBeenCalled()
   })
+
+  it('should configure git config user', async () => {
+    //when
+    const res = cmd.setupGitConfig()
+    //then
+    expect(exec.exec).toHaveBeenCalled()
+  })
 })

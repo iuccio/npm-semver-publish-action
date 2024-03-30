@@ -66,11 +66,33 @@ async function getLastTag() {
   return output
 }
 
+async function setupGitConfig() {
+  await exec.exec(
+    'git',
+    [
+      'config',
+      '--global',
+      'user.email',
+      '41898282+github-actions[bot]@users.noreply.github.com'
+    ],
+    options
+  )
+  await exec.exec(
+    'git',
+    ['config', '--global', 'user.name', 'GitHub Actions'],
+    options
+  )
+  core.debug(`git config user configured: ${output}`)
+  core.debug(`npm = ${myError}`)
+  return output
+}
+
 module.exports = {
   getCommitMessage,
   getCurrentBranch,
   execNpmVersion,
   execNpmPublish,
   execGitPush,
-  getLastTag
+  getLastTag,
+  setupGitConfig
 }
