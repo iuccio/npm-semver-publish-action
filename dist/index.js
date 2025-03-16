@@ -3997,7 +3997,7 @@ async function getCurrentBranch() {
 }
 
 async function getCommitMessage() {
-  await exec.exec('git', ['log', '-1', `--pretty=format:%s`], options)
+  await exec.exec('git', ['log', '-1', '--pretty=format:%s'], options)
   core.debug(`current git commit msg = ${output}`)
   return output
 }
@@ -4018,7 +4018,7 @@ async function execNpmVersion(versioningType) {
 
 async function execNpmPublish(provenance) {
   if (Boolean(provenance) === true) {
-    core.debug(`Executing publishing with provenance`)
+    core.debug('Executing publishing with provenance')
     await exec.exec('npm', ['publish', '--provenance'], options)
   } else {
     await exec.exec('npm', ['publish'], options)
