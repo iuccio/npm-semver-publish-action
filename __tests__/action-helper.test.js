@@ -2,41 +2,41 @@ const helper = require('../src/action-helper')
 
 describe('index', () => {
   it('should retrun major with [major]', async () => {
-    //when
+    // when
     const res = helper.calculateVersionType('Best ever feature [major]')
-    //then
+    // then
 
     expect(res).toEqual('major')
   })
 
   it('should retrun major with [MAJOR]', async () => {
-    //when
+    // when
     const res = helper.calculateVersionType('Best ever feature [major]')
-    //then
+    // then
 
     expect(res).toEqual('major')
   })
 
   it('should retrun patch with [patch]', async () => {
-    //when
+    // when
     const res = helper.calculateVersionType('Best ever feature fix [patch]')
-    //then
+    // then
 
     expect(res).toEqual('patch')
   })
 
   it('should retrun patch with [PATCH]', async () => {
-    //when
+    // when
     const res = helper.calculateVersionType('Best ever feature fix [patch]')
-    //then
+    // then
 
     expect(res).toEqual('patch')
   })
 
   it('should retrun minor', async () => {
-    //when
+    // when
     const res = helper.calculateVersionType('Best ever feature update')
-    //then
+    // then
 
     expect(res).toEqual('minor')
   })

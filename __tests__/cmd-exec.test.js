@@ -6,79 +6,79 @@ const getInputMock = jest.spyOn(core, 'getInput').mockImplementation()
 
 describe('command exec', () => {
   it('should exec git push', async () => {
-    //given
+    // given
     execMock.mockImplementation()
-    //when
+    // when
     const res = cmd.execGitPush()
-    //then
+    // then
 
     expect(exec.exec).toHaveBeenCalled()
   })
 
   it('should exec npm publish', async () => {
-    //given
+    // given
     execMock.mockImplementation()
-    //when
+    // when
     const res = cmd.execNpmPublish()
-    //then
+    // then
 
     expect(exec.exec).toHaveBeenCalled()
   })
 
   it('should exec npm publish with provenance', async () => {
-    //given
+    // given
     const provenance = true
-    //when
+    // when
     const res = cmd.execNpmPublish(provenance)
-    //then
+    // then
 
     expect(exec.exec).toHaveBeenCalled()
   })
 
   it('should exec npm version', async () => {
-    //given
+    // given
     execMock.mockImplementation()
-    //when
+    // when
     const res = cmd.execNpmVersion('patch')
-    //then
+    // then
 
     expect(exec.exec).toHaveBeenCalled()
   })
 
   it('should exec commit message', async () => {
-    //given
+    // given
     execMock.mockImplementation()
-    //when
+    // when
     const res = cmd.getCommitMessage()
-    //then
+    // then
 
     expect(exec.exec).toHaveBeenCalled()
   })
 
   it('should exec get current branch', async () => {
-    //given
+    // given
     execMock.mockImplementation()
-    //when
+    // when
     const res = cmd.getCurrentBranch()
-    //then
+    // then
 
     expect(exec.exec).toHaveBeenCalled()
   })
 
   it('should exec get last tag', async () => {
-    //given
+    // given
     execMock.mockImplementation()
-    //when
+    // when
     const res = cmd.getLastTag()
-    //then
+    // then
 
     expect(exec.exec).toHaveBeenCalled()
   })
 
   it('should configure git config user', async () => {
-    //when
+    // when
     const res = cmd.setupGitConfig()
-    //then
+    // then
     expect(exec.exec).toHaveBeenCalled()
   })
 })

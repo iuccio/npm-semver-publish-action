@@ -25,7 +25,7 @@ describe('action', () => {
   })
 
   it('should execute action on target branch', async () => {
-    //given
+    // given
     getInputMock.mockImplementation(name => {
       return 'master'
     })
@@ -44,10 +44,10 @@ describe('action', () => {
     execGitPush.mockImplementation(name => {
       return {}
     })
-    //when
+    // when
     await main.run()
 
-    //then
+    // then
     expect(runMock).toHaveReturned()
   })
 })
