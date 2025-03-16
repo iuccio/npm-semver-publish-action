@@ -1,4 +1,4 @@
-function calculateVersionType (currentCommitMsg) {
+function calculateVersionType(currentCommitMsg) {
   if (currentCommitMsg.toLowerCase().includes('[PATCH]'.toLocaleLowerCase())) {
     return 'patch'
   }

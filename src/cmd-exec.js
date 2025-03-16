@@ -14,19 +14,19 @@ options.listeners = {
   }
 }
 
-async function getCurrentBranch () {
+async function getCurrentBranch() {
   await exec.exec('git', ['rev-parse', '--abbrev-ref', 'HEAD'], options)
   core.debug(`current git branch namen = ${output}`)
   return output
 }
 
-async function getCommitMessage () {
+async function getCommitMessage() {
   await exec.exec('git', ['log', '-1', '--pretty=format:%s'], options)
   core.debug(`current git commit msg = ${output}`)
   return output
 }
 
-async function execNpmVersion (versioningType) {
+async function execNpmVersion(versioningType) {
   core.debug(`executing npmVersion with = ${versioningType}`)
   const RELEASE_COMMIT_MSG = 'new release [skip ci]'
   core.info(`Executing new ${versioningType.toUpperCase()} release...`)
@@ -40,7 +40,7 @@ async function execNpmVersion (versioningType) {
   return output
 }
 
-async function execNpmPublish (provenance) {
+async function execNpmPublish(provenance) {
   if (Boolean(provenance) === true) {
     core.debug('Executing publishing with provenance')
     await exec.exec('npm', ['publish', '--provenance'], options)
@@ -52,21 +52,21 @@ async function execNpmPublish (provenance) {
   return output
 }
 
-async function execGitPush () {
+async function execGitPush() {
   await exec.exec('git', ['push', '--follow-tags'], options)
   core.debug(`git commit and tag succsessfully published: ${output}`)
   core.debug(`npm = ${myError}`)
   return output
 }
 
-async function getLastTag () {
+async function getLastTag() {
   await exec.exec('git', ['describe', '--tags', '--abbrev=0'], options)
   core.debug(`git commit and tag succsessfully published: ${output}`)
   core.debug(`npm = ${myError}`)
   return output
 }
 
-async function setupGitConfig () {
+async function setupGitConfig() {
   await exec.exec(
     'git',
     [

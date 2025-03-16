@@ -10,7 +10,7 @@ const MAJOR_MSG = '[MAJOR]'
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
  */
-async function run () {
+async function run() {
   try {
     await cmd.setupGitConfig()
     const targetBranch = await core.getInput('target-branch', {
